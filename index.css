@@ -1,0 +1,15 @@
+body {
+  font-family: Avenir;
+  margin: 20px;
+}
+
+header {
+  background-color: pink;
+  text-align: center;
+  margin: 20px;
+}
+
+footer {
+  font-style: italic;
+  font-size: 10px;
+}
