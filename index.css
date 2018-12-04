@@ -1,5 +1,5 @@
 body {
-  font-family: Avenir;
+  font-family: "Century Gothic", sans-serif;
   margin: 20px;
 }
 
@@ -10,6 +10,7 @@ header {
 }
 
 footer {
+  background-color: pink;
   font-style: italic;
   font-size: 10px;
 }
