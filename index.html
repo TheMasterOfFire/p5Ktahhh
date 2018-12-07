@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Welcome to the Trial</title>
     <link rel="stylesheet" href="index.css">
-  </head>
-  <body>
-  <header>
+</head>
+<body>
+<header>
     <h1>Seth's Ktah</h1>
-    <p>You can write outside the canvas with P5: <span id="mouse"></span></p>
-  </header>
-    <div id="sketch"></div>
-    <footer>Put a footer here if you like</footer>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
-    <script src="index.js"></script>
-  </body>
+</header>
+<div id="bigContainer">
+    <div id="sketch">
+        <div id="healthBarTag">
+            <h3>Player Health</h3>
+            <div id="container"></div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
+<script src="progressbar.js"></script>
+<script src="index.js"></script>
+<footer>Put a footer here if you like</footer>
+</body>
 </html>

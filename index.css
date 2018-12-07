@@ -1,20 +1,37 @@
-body {
-  font-family: "Century Gothic",Avenir, sans-serif;
-  margin: 20px;
+body, html {
+    font-family: "Century Gothic", Avenir, sans-serif;
+    height: 100%;
+    width: 100%;
+    overflow:hidden;
 }
 
 header {
-  background-color: pink;
-  text-align: center;
-  margin: 20px;
+    background-color: pink;
+    text-align: center;
+    margin: 20px;
 }
 
 footer {
-  background-color: pink;
-  font-style: italic;
-  font-size: 10px;
-}
-.sketch {
-  margin:auto;
+    background-color: pink;
+    font-style: italic;
+    font-size: 10px;
 }
 
+#container {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    text-align: center;
+    float: right;
+}
+
+#healthBarTag {
+    width: 200px;
+    text-align: center;
+    float: right;
+}
+
+#bigContainer {
+    height: 90vh;
+    width: 99vw;
+}
