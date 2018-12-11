@@ -1,6 +1,6 @@
 class Character {
-    constructor(x, y, color, radius, speed) {
-        Object.assign(this, {x, y, color, radius, speed});
+    constructor(x, y, color, radius, speed,health,name,lastDecrement) {
+        Object.assign(this, {x, y, color, radius, speed,health,name,lastDecrement});
     }
 
     draw() {
@@ -12,9 +12,20 @@ class Character {
         this.x += (target.x - this.x) * this.speed;
         this.y += (target.y - this.y) * this.speed;
     }
+
+    decrementHealth(attacker){
+        if (frameCount-this.lastDecrement>=60) {
+            this.health -= attacker.radius;
+            bar.animate(this.health / 100);
+            this.lastDecrement = frameCount;
+            if(this.health<=0){
+                //endGame();
+            }
+        }
+    }
 }
 
-const player = new Character(30, 30, "blue", 10, 0.05);
+const player = new Character(30, 30, "blue", 10, 0.05, 100, "Player",0);
 const enemies = [
     new Character(300, 0, "rgb(200,190,80)", 15, 0.01),
     new Character(300, 300, "rgb(240,100,250)", 17, 0.03),
@@ -71,6 +82,11 @@ function pushOff(c1, c2) {
         c1.y -= adjustY;
         c2.x += adjustX;
         c2.y += adjustY;
+        if(c1.name === "Player"){
+            c1.decrementHealth(c2);
+        }else if(c2.name === "Player") {
+            c2.decrementHealth(c1);
+        }
     }
 }
 
