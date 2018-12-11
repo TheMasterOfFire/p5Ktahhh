@@ -14,8 +14,9 @@ class Character {
     }
 
     decrementHealth(attacker){
-        if (frameCount-this.lastDecrement>=60) {
+        if (frameCount-this.lastDecrement>=30) {
             this.health -= attacker.radius;
+            if(this.health<0)this.health = 0;
             bar.animate(this.health / 100);
             this.lastDecrement = frameCount;
             if(this.health<=0){
@@ -34,6 +35,8 @@ const enemies = [
 ];
 const scarecrow = [];
 let startingFrameCount;
+const FPS = document.getElementById("FPSDisplay");
+let lastFPS = 0;
 
 function setup() {
     var height = document.getElementById('bigContainer').offsetHeight;
@@ -59,6 +62,10 @@ function draw() {
     adjust();
     if ((scarecrow[0] != null) && (frameCount - startingFrameCount >= 300)){
         scarecrow.pop();
+    }
+    if(frameCount-lastFPS>=30) {
+        FPS.textContent = Math.floor(frameRate());
+        lastFPS=frameCount;
     }
 }
 
@@ -98,21 +105,19 @@ function createScarecrow() {
 }
 
 // progressbar.js@1.0.0 version is used
-// Docs: http://progressbarjs.readthedocs.org/en/1.0.0/
-
 var bar = new ProgressBar.Circle(container, {
     color: '#aaa',
     // This has to be the same size as the maximum width to
     // prevent clipping
-    strokeWidth: 4,
+    strokeWidth: 5,
     trailWidth: 1,
     easing: 'easeInOut',
     duration: 1400,
     text: {
         autoStyleContainer: false
     },
-    from: { color: '#aaa', width: 1 },
-    to: { color: '#333', width: 4 },
+    from: { color: '#faa', width: 1 },
+    to: { color: '#afa', width: 5 },
     // Set default step function for all animate calls
     step: function(state, circle) {
         circle.path.setAttribute('stroke', state.color);
@@ -124,7 +129,6 @@ var bar = new ProgressBar.Circle(container, {
         } else {
             circle.setText(value);
         }
-
     }
 });
 bar.text.style.fontFamily = 'Century Gothic, Helvetica, sans-serif';
