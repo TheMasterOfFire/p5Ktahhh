@@ -25,6 +25,27 @@ footer {
     float: right;
 }
 
+#popup-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba( 0,0,0,.2);
+    display: none;
+}
+
+#popup {
+    position: relative;
+    min-height: 50%;
+    width: 50%;
+    top: 25%;
+    margin: auto;
+    background-color: white;
+    border: 10px black double;
+    text-align: center;
+}
+
 #healthBarTag {
     width: 200px;
     text-align: center;
@@ -34,4 +55,12 @@ footer {
 #bigContainer {
     height: 90vh;
     width: 99vw;
+}
+#uDed{
+    opacity: 0;
+    font-size: 100px;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+    color: red;
 }

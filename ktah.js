@@ -1,6 +1,6 @@
 class Character {
-    constructor(x, y, color, radius, speed,health,name,lastDecrement) {
-        Object.assign(this, {x, y, color, radius, speed,health,name,lastDecrement});
+    constructor(x, y, color, radius, speed, health, name, lastDecrement) {
+        Object.assign(this, {x, y, color, radius, speed, health, name,lastDecrement});
     }
 
     draw() {
@@ -13,20 +13,22 @@ class Character {
         this.y += (target.y - this.y) * this.speed;
     }
 
-    decrementHealth(attacker){
-        if (frameCount-this.lastDecrement>=30) {
-            this.health -= attacker.radius;
-            if(this.health<0)this.health = 0;
-            bar.animate(this.health / 100);
-            this.lastDecrement = frameCount;
-            if(this.health<=0){
-                //endGame();
+    decrementHealth(attacker) {
+        if (endGame !== 1) {
+            if (frameCount - this.lastDecrement >= 30) {
+                this.health -= attacker.radius;
+                if (this.health < 0) this.health = 0;
+                bar.animate(this.health / 100);
+                this.lastDecrement = frameCount;
+                if (this.health <= 0) {
+                    endGame = 1;
+                }
             }
         }
     }
 }
 
-const player = new Character(30, 30, "blue", 10, 0.05, 100, "Player",0);
+const player = new Character(30, 30, "blue", 10, 0.05, 100, "Player", 0);
 const enemies = [
     new Character(300, 0, "rgb(200,190,80)", 15, 0.01),
     new Character(300, 300, "rgb(240,100,250)", 17, 0.03),
@@ -37,11 +39,14 @@ const scarecrow = [];
 let startingFrameCount;
 const FPS = document.getElementById("FPSDisplay");
 let lastFPS = 0;
+let endGame = 0;
+let runGameOverCounter = 0;
+let canvasHeight = document.getElementById('bigContainer').offsetHeight;
+let canvasWidth = document.getElementById('bigContainer').offsetWidth - 210;
+let YouDiedChime;
 
 function setup() {
-    var height = document.getElementById('bigContainer').offsetHeight;
-    var width = document.getElementById('bigContainer').offsetWidth-210;
-    const canvas = createCanvas(width, height);
+    const canvas = createCanvas(canvasWidth, canvasHeight);
     canvas.parent('sketch');
     noStroke();
     document.body.onkeyup = function (e) {
@@ -49,6 +54,7 @@ function setup() {
             createScarecrow();
         }
     };
+    YouDiedChime = loadSound('assets/YouDiedChime.mp3');
     bar.animate(1.0);
 }
 
@@ -60,13 +66,15 @@ function draw() {
     player.move({x: mouseX, y: mouseY});
     enemies.forEach(enemy => enemy.move(scarecrow[0] || player));
     adjust();
-    if ((scarecrow[0] != null) && (frameCount - startingFrameCount >= 300)){
+    if ((scarecrow[0] != null) && (frameCount - startingFrameCount >= 300)) {
         scarecrow.pop();
     }
-    if(frameCount-lastFPS>=30) {
+    if (frameCount - lastFPS >= 30) {
         FPS.textContent = Math.floor(frameRate());
-        lastFPS=frameCount;
+        lastFPS = frameCount;
     }
+    if (endGame === 1) gameOver();
+    //if (startGame ===1) startGame();
 }
 
 function adjust() {
@@ -89,9 +97,9 @@ function pushOff(c1, c2) {
         c1.y -= adjustY;
         c2.x += adjustX;
         c2.y += adjustY;
-        if(c1.name === "Player"){
+        if (c1.name === "Player") {
             c1.decrementHealth(c2);
-        }else if(c2.name === "Player") {
+        } else if (c2.name === "Player") {
             c2.decrementHealth(c1);
         }
     }
@@ -116,16 +124,16 @@ var bar = new ProgressBar.Circle(container, {
     text: {
         autoStyleContainer: false
     },
-    from: { color: '#faa', width: 1 },
-    to: { color: '#afa', width: 5 },
+    from: {color: '#faa', width: 1},
+    to: {color: '#afa', width: 5},
     // Set default step function for all animate calls
-    step: function(state, circle) {
+    step: function (state, circle) {
         circle.path.setAttribute('stroke', state.color);
         circle.path.setAttribute('stroke-width', state.width);
 
         var value = Math.round(circle.value() * 100);
         if (value === 0) {
-            circle.setText('');
+            circle.setText('Player Health');
         } else {
             circle.setText(value);
         }
@@ -133,3 +141,11 @@ var bar = new ProgressBar.Circle(container, {
 });
 bar.text.style.fontFamily = 'Century Gothic, Helvetica, sans-serif';
 bar.text.style.fontSize = '2rem';
+
+function gameOver() {
+    if(runGameOverCounter<1) {
+        document.getElementById("popup-background").style.display = "block";
+        YouDiedChime.play();
+        runGameOverCounter++;
+    }
+}
