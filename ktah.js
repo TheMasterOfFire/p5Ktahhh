@@ -14,56 +14,51 @@ class Character {
     }
 
     decrementHealth(attacker) {
-        if (endGame !== 1) {
             if (frameCount - this.lastDecrement >= 30) {
                 this.health -= attacker.radius;
                 if (this.health < 0) this.health = 0;
                 bar.animate(this.health / 100);
                 this.lastDecrement = frameCount;
                 if (this.health <= 0) {
-                    endGame = 1;
+                    gameOver();
                 }
             }
         }
-    }
 }
 
-const player = new Character(30, 30, "blue", 10, 0.05, 100, "Player", 0);
-const enemies = [
-    new Character(300, 0, "rgb(200,190,80)", 15, 0.01),
-    new Character(300, 300, "rgb(240,100,250)", 17, 0.03),
-    new Character(0, 300, "rgb(80,200,235)", 20, 0.003),
-    new Character(20, 400, "rgb(100,170,190)", 12, 0.02),
-];
-const scarecrow = [];
-let startingFrameCount;
-const FPS = document.getElementById("FPSDisplay");
-let lastFPS = 0;
-let endGame = 0;
-let runGameOverCounter = 0;
-let canvasHeight = document.getElementById('bigContainer').offsetHeight;
-let canvasWidth = document.getElementById('bigContainer').offsetWidth - 210;
 let YouDiedChime;
+const canvasHeight = document.getElementById('bigContainer').offsetHeight;
+const canvasWidth = document.getElementById('bigContainer').offsetWidth - 210;
 
 function setup() {
     const canvas = createCanvas(canvasWidth, canvasHeight);
     canvas.parent('sketch');
     noStroke();
-    document.body.onkeyup = function (e) {
-        if (e.keyCode === 32) {
-            createScarecrow();
-        }
-    };
     YouDiedChime = loadSound('assets/YouDiedChime.mp3');
     bar.animate(1.0);
 }
+
+const player = new Character(canvasWidth/2, canvasHeight/2, "rgb(0,100,0)", 15, 0.05, 100, "Player", 0);
+const enemies = [
+    new Character(0, 0, "rgb(126,64,2)", 15, 0.05),
+    new Character(canvasWidth, 0, "rgb(126,64,2)", 15, 0.02),
+    new Character(canvasWidth, canvasHeight, "rgb(126,64,2)", 15, 0.07)
+];
+const scarecrow = [];
+let startingFrameCount;
+const FPS = document.getElementById("FPSDisplay");
+let lastFPS = 0;
+let runGameOverCounter = 0;
+const radioMouse = document.getElementById("mouse");
+const radioArrows = document.getElementById("arrows");
+const radioWASD = document.getElementById("WASD");
 
 function draw() {
     background("lightgreen");
     player.draw();
     enemies.forEach(enemy => enemy.draw());
     scarecrow.forEach(scarecrow => scarecrow.draw());
-    player.move({x: mouseX, y: mouseY});
+    if (radioMouse.checked) player.move({x: mouseX, y: mouseY});
     enemies.forEach(enemy => enemy.move(scarecrow[0] || player));
     adjust();
     if ((scarecrow[0] != null) && (frameCount - startingFrameCount >= 300)) {
@@ -73,7 +68,6 @@ function draw() {
         FPS.textContent = Math.floor(frameRate());
         lastFPS = frameCount;
     }
-    if (endGame === 1) gameOver();
     //if (startGame ===1) startGame();
 }
 
@@ -112,25 +106,20 @@ function createScarecrow() {
     }
 }
 
-// progressbar.js@1.0.0 version is used
 var bar = new ProgressBar.Circle(container, {
     color: '#aaa',
-    // This has to be the same size as the maximum width to
-    // prevent clipping
     strokeWidth: 5,
     trailWidth: 1,
     easing: 'easeInOut',
-    duration: 1400,
+    duration: 500,
     text: {
         autoStyleContainer: false
     },
     from: {color: '#faa', width: 1},
     to: {color: '#afa', width: 5},
-    // Set default step function for all animate calls
     step: function (state, circle) {
         circle.path.setAttribute('stroke', state.color);
         circle.path.setAttribute('stroke-width', state.width);
-
         var value = Math.round(circle.value() * 100);
         if (value === 0) {
             circle.setText('Player Health');
@@ -147,5 +136,38 @@ function gameOver() {
         document.getElementById("popup-background").style.display = "block";
         YouDiedChime.play();
         runGameOverCounter++;
+        noLoop();
     }
 }
+
+function keyPressed() {
+    switch(keyCode) {
+        case 32:
+            createScarecrow();
+            break;
+        case 82:
+            location.reload();
+            break;
+    }
+}
+    if(radioArrows.checked) {
+        console.log("arrows!");
+        switch (keyCode) {
+            case UP_ARROW:
+                player.move({x:player.x,y:player.y+30});
+                break;
+            case DOWN_ARROW:
+                player.move({x:player.x,y:player.y-30});
+                break;
+            case LEFT_ARROW:
+                player.move({x:player.x-30,y:player.y});
+                break;
+            case RIGHT_ARROW:
+                player.move({x:player.x+30,y:player.y});
+                break;
+        }
+
+        if (radioWASD.checked){
+
+        }
+    }

@@ -35,7 +35,7 @@ footer {
     display: none;
 }
 
-#popup {
+.popup {
     position: relative;
     min-height: 50%;
     width: 50%;

@@ -15,13 +15,30 @@
             <h3>Player Health</h3>
             <div id="container"></div>
             <h3>FPS:</h3><span id="FPSDisplay"></span>
+            <h2>Options:</h2>
+            <h4>Controls:</h4>
+            <div>
+                <input type="radio" id="mouse" name="controls" value="Mouse"  checked>
+                <label for="mouse">Mouse Controls</label>
+            </div>
+            <div>
+                <input type="radio" id="arrows" name="controls" value="Arrows">
+                <label for="arrows">Arrows</label>
+            </div>
+            <div>
+                <input type="radio" id="WASD" name="controls" value="WASD">
+                <label for="WASD">WASD</label>
+            </div>
         </div>
     </div>
 </div>
 <div id="popup-background">
-    <div id="popup">
+    <div id="popup_end" class="popup">
         <h1>Oh, no! K'tah has claimed another victim! press 'R' to restart and try again.</h1>
         <img src="assets/YouDied.gif"/>
+    </div>
+    <div id="popup_start" class="popup">
+        <h1>Welcome!</h1>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
