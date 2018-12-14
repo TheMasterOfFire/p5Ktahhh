@@ -31,7 +31,7 @@ footer {
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba( 0,0,0,.2);
+    background-color: rgba( 0,0,0,.3);
 }
 
 .popup {
@@ -54,4 +54,15 @@ footer {
 #bigContainer {
     height: 90vh;
     width: 99vw;
+}
+
+#pause {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 30%;
+    text-align: center;
+    color: red;
+    display: none;
+    font-size: 70px;
 }

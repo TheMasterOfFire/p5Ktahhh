@@ -2,6 +2,7 @@ document.body.addEventListener("keypress", startGame);
 let popupBackground = document.getElementById("popup-background");
 let popupEnd = document.getElementById("popup-end");
 let popupStart = document.getElementById("popup-start");
+let popupPause = document.getElementById("pause");
 let gameRun = 0;
 let pause = 0;
 
@@ -54,7 +55,7 @@ function setup() {
     bar.animate(1.0);
 }
 
-const player = new Character(canvasWidth / 2, canvasHeight / 2, "rgb(0,100,0)", 15, 0.05, 100, "Player", 0);
+const player = new Character(canvasWidth / 2, canvasHeight / 2, "rgb(0,100,0)", 15, 0.04, 100, "Player", 0);
 const enemies = [
     new Character(0, 0, "rgb(126,64,2)", 15, 0.05),
     new Character(canvasWidth, 0, "rgb(126,64,2)", 15, 0.02),
@@ -166,29 +167,49 @@ function keyPressed() {
             togglePause();
             break;
     }
-
+let x = player.x;
+let y = player.y;
     if (radioArrows.checked) {
         console.log("arrows!");
         switch (keyCode) {
             case UP_ARROW:
-                player.move({x: player.x, y: player.y + 30});
+                y-=1000;
                 break;
             case DOWN_ARROW:
-                player.move({x: player.x, y: player.y - 30});
+                y+=1000;
                 break;
             case LEFT_ARROW:
-                player.move({x: player.x - 30, y: player.y});
+                x-=1000;
                 break;
             case RIGHT_ARROW:
-                player.move({x: player.x + 30, y: player.y});
+                x+=1000;
                 break;
         }
     }
         if (radioWASD.checked) {
-
+            switch(keyCode){
+                case 87:
+                    y-=1000;
+                    break;
+                case 83:
+                    y+=1000;
+                    break;
+                case 65:
+                    x-=1000;
+                    break;
+                case 68:
+                    x+=1000;
+                    break;
+            }
         }
+        player.move({x:x,y:y});
 }
 
 function togglePause(){
     pause===0 ? pause = 1 : pause = 0;
+    if(popupPause.style.display === "block") {
+        popupPause.style.display = "none";
+    }else{
+        popupPause.style.display = "block";
+    }
 }
