@@ -1,6 +1,22 @@
+document.body.addEventListener("keypress", startGame);
+let popupBackground = document.getElementById("popup-background");
+let popupEnd = document.getElementById("popup-end");
+let popupStart = document.getElementById("popup-start");
+let gameRun = 0;
+let pause = 0;
+
+function startGame() {
+    if (gameRun < 1) {
+        popupBackground.style.display = "none";
+        popupStart.style.display = "none";
+        gameRun++;
+    }
+}
+
+
 class Character {
     constructor(x, y, color, radius, speed, health, name, lastDecrement) {
-        Object.assign(this, {x, y, color, radius, speed, health, name,lastDecrement});
+        Object.assign(this, {x, y, color, radius, speed, health, name, lastDecrement});
     }
 
     draw() {
@@ -14,16 +30,16 @@ class Character {
     }
 
     decrementHealth(attacker) {
-            if (frameCount - this.lastDecrement >= 30) {
-                this.health -= attacker.radius;
-                if (this.health < 0) this.health = 0;
-                bar.animate(this.health / 100);
-                this.lastDecrement = frameCount;
-                if (this.health <= 0) {
-                    gameOver();
-                }
+        if (frameCount - this.lastDecrement >= 30) {
+            this.health -= attacker.radius;
+            if (this.health < 0) this.health = 0;
+            bar.animate(this.health / 100);
+            this.lastDecrement = frameCount;
+            if (this.health <= 0) {
+                gameOver();
             }
         }
+    }
 }
 
 let YouDiedChime;
@@ -38,7 +54,7 @@ function setup() {
     bar.animate(1.0);
 }
 
-const player = new Character(canvasWidth/2, canvasHeight/2, "rgb(0,100,0)", 15, 0.05, 100, "Player", 0);
+const player = new Character(canvasWidth / 2, canvasHeight / 2, "rgb(0,100,0)", 15, 0.05, 100, "Player", 0);
 const enemies = [
     new Character(0, 0, "rgb(126,64,2)", 15, 0.05),
     new Character(canvasWidth, 0, "rgb(126,64,2)", 15, 0.02),
@@ -48,12 +64,12 @@ const scarecrow = [];
 let startingFrameCount;
 const FPS = document.getElementById("FPSDisplay");
 let lastFPS = 0;
-let runGameOverCounter = 0;
 const radioMouse = document.getElementById("mouse");
 const radioArrows = document.getElementById("arrows");
 const radioWASD = document.getElementById("WASD");
 
 function draw() {
+    if(gameRun > 0 && pause === 0) {
     background("lightgreen");
     player.draw();
     enemies.forEach(enemy => enemy.draw());
@@ -68,7 +84,7 @@ function draw() {
         FPS.textContent = Math.floor(frameRate());
         lastFPS = frameCount;
     }
-    //if (startGame ===1) startGame();
+}
 }
 
 function adjust() {
@@ -132,42 +148,47 @@ bar.text.style.fontFamily = 'Century Gothic, Helvetica, sans-serif';
 bar.text.style.fontSize = '2rem';
 
 function gameOver() {
-    if(runGameOverCounter<1) {
-        document.getElementById("popup-background").style.display = "block";
+        popupBackground.style.display = "block";
+        popupEnd.style.display = "block";
         YouDiedChime.play();
-        runGameOverCounter++;
         noLoop();
-    }
 }
 
 function keyPressed() {
-    switch(keyCode) {
+    switch (keyCode) {
         case 32:
             createScarecrow();
             break;
         case 82:
             location.reload();
             break;
+        case 80:
+            togglePause();
+            break;
     }
-}
-    if(radioArrows.checked) {
+
+    if (radioArrows.checked) {
         console.log("arrows!");
         switch (keyCode) {
             case UP_ARROW:
-                player.move({x:player.x,y:player.y+30});
+                player.move({x: player.x, y: player.y + 30});
                 break;
             case DOWN_ARROW:
-                player.move({x:player.x,y:player.y-30});
+                player.move({x: player.x, y: player.y - 30});
                 break;
             case LEFT_ARROW:
-                player.move({x:player.x-30,y:player.y});
+                player.move({x: player.x - 30, y: player.y});
                 break;
             case RIGHT_ARROW:
-                player.move({x:player.x+30,y:player.y});
+                player.move({x: player.x + 30, y: player.y});
                 break;
         }
-
-        if (radioWASD.checked){
+    }
+        if (radioWASD.checked) {
 
         }
-    }
+}
+
+function togglePause(){
+    pause===0 ? pause = 1 : pause = 0;
+}
