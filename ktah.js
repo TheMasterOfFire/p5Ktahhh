@@ -70,22 +70,22 @@ const radioArrows = document.getElementById("arrows");
 const radioWASD = document.getElementById("WASD");
 
 function draw() {
-    if(gameRun > 0 && pause === 0) {
-    background("lightgreen");
-    player.draw();
-    enemies.forEach(enemy => enemy.draw());
-    scarecrow.forEach(scarecrow => scarecrow.draw());
-    if (radioMouse.checked) player.move({x: mouseX, y: mouseY});
-    enemies.forEach(enemy => enemy.move(scarecrow[0] || player));
-    adjust();
-    if ((scarecrow[0] != null) && (frameCount - startingFrameCount >= 300)) {
-        scarecrow.pop();
+    if (gameRun > 0 && pause === 0) {
+        background("lightgreen");
+        player.draw();
+        enemies.forEach(enemy => enemy.draw());
+        scarecrow.forEach(scarecrow => scarecrow.draw());
+        if (radioMouse.checked) player.move({x: mouseX, y: mouseY});
+        enemies.forEach(enemy => enemy.move(scarecrow[0] || player));
+        adjust();
+        if ((scarecrow[0] != null) && (frameCount - startingFrameCount >= 300)) {
+            scarecrow.pop();
+        }
+        if (frameCount - lastFPS >= 30) {
+            FPS.textContent = Math.floor(frameRate());
+            lastFPS = frameCount;
+        }
     }
-    if (frameCount - lastFPS >= 30) {
-        FPS.textContent = Math.floor(frameRate());
-        lastFPS = frameCount;
-    }
-}
 }
 
 function adjust() {
@@ -149,10 +149,10 @@ bar.text.style.fontFamily = 'Century Gothic, Helvetica, sans-serif';
 bar.text.style.fontSize = '2rem';
 
 function gameOver() {
-        popupBackground.style.display = "block";
-        popupEnd.style.display = "block";
-        YouDiedChime.play();
-        noLoop();
+    popupBackground.style.display = "block";
+    popupEnd.style.display = "block";
+    YouDiedChime.play();
+    noLoop();
 }
 
 function keyPressed() {
@@ -167,49 +167,48 @@ function keyPressed() {
             togglePause();
             break;
     }
-let x = player.x;
-let y = player.y;
+    let x = player.x;
+    let y = player.y;
     if (radioArrows.checked) {
-        console.log("arrows!");
         switch (keyCode) {
             case UP_ARROW:
-                y-=1000;
+                y -= 1000;
                 break;
             case DOWN_ARROW:
-                y+=1000;
+                y += 1000;
                 break;
             case LEFT_ARROW:
-                x-=1000;
+                x -= 1000;
                 break;
             case RIGHT_ARROW:
-                x+=1000;
+                x += 1000;
                 break;
         }
     }
-        if (radioWASD.checked) {
-            switch(keyCode){
-                case 87:
-                    y-=1000;
-                    break;
-                case 83:
-                    y+=1000;
-                    break;
-                case 65:
-                    x-=1000;
-                    break;
-                case 68:
-                    x+=1000;
-                    break;
-            }
+    if (radioWASD.checked) {
+        switch (keyCode) {
+            case 87:
+                y -= 1000;
+                break;
+            case 83:
+                y += 1000;
+                break;
+            case 65:
+                x -= 1000;
+                break;
+            case 68:
+                x += 1000;
+                break;
         }
-        player.move({x:x,y:y});
+    }
+    player.move({x: x, y: y});
 }
 
-function togglePause(){
-    pause===0 ? pause = 1 : pause = 0;
-    if(popupPause.style.display === "block") {
+function togglePause() {
+    pause === 0 ? pause = 1 : pause = 0;
+    if (popupPause.style.display === "block") {
         popupPause.style.display = "none";
-    }else{
+    } else {
         popupPause.style.display = "block";
     }
 }

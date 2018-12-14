@@ -2,7 +2,7 @@ body, html {
     font-family: "Century Gothic", Avenir, sans-serif;
     height: 100%;
     width: 100%;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 header {
@@ -31,7 +31,7 @@ footer {
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba( 0,0,0,.3);
+    background-color: rgba(0, 0, 0, .3);
 }
 
 .popup {
